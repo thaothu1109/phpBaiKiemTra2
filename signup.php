@@ -1,3 +1,6 @@
+<?php
+require 'session.php';
+?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -144,6 +147,16 @@
 <div class="register-container">
 <img src="logo-manhha.png" alt="English with Mai Anh Logo" class="logo">
     <h3 style = " margin-right:8px;color: #006400;">Đăng ký</h3>
+    <?php
+    //Thắm thêm đoạn này vào để hiển thị thông báo tên đăng nhập hoặc mail đã tồn tại 
+if (isset($_GET['error'])) {
+    if ($_GET['error'] == 'exists') {
+        echo "<div class='error'>Tên đăng nhập hoặc email đã tồn tại!</div>";
+    } elseif ($_GET['error'] == 'failed') {
+        echo "<div class='error'>Lỗi khi đăng ký! Vui lòng thử lại.</div>";
+    }
+}
+?>
     <!-- Hiển thị form đăng ký -->
     <form method="POST" action="xlsignup.php">
         <input type="text" name="fullname" placeholder="Họ tên" required>
@@ -155,10 +168,22 @@
         title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
         <i class="fas fa-eye-slash eye-icon" id="togglePassword" onclick="togglePassword()"></i>
 </div>
-        <input type="hidden" name="" value="">
+<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <button type="submit">Đăng ký</button>
     </form>
-
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('togglePassword');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        }
+    </script>
 
 </body>
 </html>
