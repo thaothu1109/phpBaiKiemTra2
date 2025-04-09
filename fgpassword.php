@@ -45,7 +45,7 @@ h2 {
 label {
     display: block;
     margin-bottom: 8px;
-    text-align: left;
+    text-align: center;
     font-size: 15px;
     color:  #006400;
 }
@@ -119,18 +119,39 @@ a.back-to-login:hover {
 </head>
 <body>
     <div class="forgot-password-container">
-    <img src="logo-manhha.png" alt="English with Mai Anh Logo" class="logo">
-        <h3 style = "margin-bottom: 20px; margin-top: -30px; color:  #006400;">Quên Mật Khẩu</h3>
+    <img src="logo-manhha.png" alt="Toeic Manh Ha" class="logo">
+        <h3 style = "margin-bottom: 20px; margin-top: -30px; color: #0c046d;">Quên Mật Khẩu</h3>
+        
+        <!-- Hiển thị thông báo nếu có -->
+        <?php
+        if (isset($_SESSION['message'])) {
+            $message = $_SESSION['message'];
+            $message_type = $message['type'] === 'success' ? 'success' : 'error';
+            echo "<div class='$message_type'>{$message['text']}</div>";
+            unset($_SESSION['message']);
+        }
+        ?>
+        <?php if (!$otpSent): ?>
+            <!-- Form gửi mã OTP -->
              
             <form action="xlfgpassword.php" method="POST">
-                <label for="username_or_email">Nhập tên người dùng hoặc Email:</label>
+                <label for="username_or_email" style="color: #0c046d">Nhập tên người dùng hoặc Email:</label>
                 <input type="text" name="username_or_email" required>
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <button type="submit">Gửi Mã OTP</button>
             </form>
+        <?php else: ?>
+            <!-- Form nhập mã OTP -->
+            <form action="xacnhan_otp.php" method="POST">
+                <label for="otp">Nhập mã OTP:</label>
+                <input type="text" name="otp" required>
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                <button type="submit">Xác nhận OTP</button>
+            </form>
+        <?php endif; ?>
 
         <!-- Nút quay lại trang đăng nhập -->
-        <a href="login.php" class="back-to-login">Quay lại trang đăng nhập</a>
+        <a href="login.php" class="back-to-login" style="color: #0c046d">Quay lại trang đăng nhập</a>
     </div>
 </body>
 </html>
