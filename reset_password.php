@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('ketnoi.php'); // Kết nối đến cơ sở dữ liệu
+#session_start();
+include('connect.php'); // Kết nối đến cơ sở dữ liệu
 include('session.php');
 ?>
 
@@ -13,7 +13,7 @@ include('session.php');
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: rgb(200, 237, 200);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -37,19 +37,25 @@ include('session.php');
         }
 
         .reset-password-container input[type="password"] {
-            width: 80%;
-            padding: 15px; /* Tăng kích thước padding */
-           margin-bottom: 20px;
-            border: 2px solid #00bcd4;
-            border-radius: 25px;
-            outline: none;
-            font-size: 15px; /* Tăng kích thước chữ */
-        }
+        width: 80%;
+        padding: 15px; /* Tăng kích thước padding */
+        margin-bottom: 20px;
+        border: 2px solid #006400; /* Thêm khung màu xanh */
+        border-radius: 25px;
+        outline: none;
+        font-size: 15px; /* Tăng kích thước chữ */
+        transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu khung */
+    }
+        .reset-password-container input[type="password"]::placeholder {
+        font-style: italic; /* Chữ in nghiêng */
+        font-size: 0.9em; /* Cỡ chữ nhỏ hơn */
+        color: #888; /* Màu chữ placeholder (tùy chọn) */
+    }
 
         .reset-password-container button {
             width: 40%;
     padding: 12px;
-    background-color: #00bcd4;
+    background-color: #006400;
     color: white;
     border: none;
     border-radius: 20px;
@@ -59,8 +65,17 @@ include('session.php');
         }
 
         .reset-password-container button:hover {
-            background-color: #0056b3;
+            background-color:rgb(1, 77, 1);
         }
+        input[type="text"] {
+    width: 100%;
+            padding: 15px; /* Tăng kích thước padding */
+           margin-bottom: 20px;
+            border: 2px solid  #006400;
+            border-radius: 25px;
+            outline: none;
+            font-size: 15px; /* Tăng kích thước chữ */
+}
 
         .error, .success {
             justify-content: center;
@@ -89,8 +104,9 @@ include('session.php');
     label {
     display: block;
     margin-bottom: 8px;
+    margin-left: 50px;
     text-align: left;
-    font-size: 15px;
+    font-size: 16px;
     color: #0c046d;
     }
     .logo {
@@ -109,13 +125,13 @@ a.back-to-login:hover {
     text-decoration: underline;
 }
 button:hover {
-    background-color: #008cba; /* Màu tối hơn khi hover */
+    background-color:rgb(2, 69, 2); /* Màu tối hơn khi hover */
 }
     </style>
 </head>
 <body>
     <div class="reset-password-container">
-    <img src="Screenshot 2024-10-30 040256.png" alt="English with Mai Anh Logo" class="logo">
+    <img src="logo-manhha.png" alt="Toeic Manh Ha" class="logo">
     <h3 style = "margin-bottom: 20px; margin-top: -30px; color: #0c046d;">Đặt lại mật khẩu</h3>
         <!-- Hiển thị thông báo -->
         <?php
@@ -141,7 +157,7 @@ button:hover {
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <button type="submit">Đặt Lại Mật Khẩu</button>
         </form>
-        <a href="login.php" class="back-to-login">Quay lại trang đăng nhập</a>
+        <a href="login.php" class="back-to-login" style="color: #0c046d;">Quay lại trang đăng nhập</a>
     </div>
 </body>
 </html>

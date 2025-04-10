@@ -150,7 +150,7 @@
 <div class="login-container">
     <div class="main-container">
         <!-- Ảnh nhân vật minh họa -->
-        <img src="TOEIC-logo-768x696.jpg" alt="Toiec" class="character-image">
+        <img src="TOEIC-logo.jpg" alt="Toiec" class="character-image">
     <div class="login-container">
             <!-- Logo của English with Toiec -->
             <img src="logo-manhha.png" alt="Toiec" class="logo">
