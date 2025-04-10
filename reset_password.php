@@ -108,6 +108,9 @@ include('session.php');
 a.back-to-login:hover {
     text-decoration: underline;
 }
+button:hover {
+    background-color: #008cba; /* Màu tối hơn khi hover */
+}
     </style>
 </head>
 <body>
@@ -119,9 +122,7 @@ a.back-to-login:hover {
     if (isset($_SESSION['message'])) {
         $message = $_SESSION['message'];
         $message_type = $message['type'] === 'success' ? 'success' : 'error';
-        echo "<div class='$message_type'>";
-        echo $message['text'];
-        echo "</div>";
+        echo "<div class='$message_type'>" . htmlspecialchars($message['text']) . "</div>";
         unset($_SESSION['message']); 
     }
 

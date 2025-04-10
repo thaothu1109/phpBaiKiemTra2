@@ -1,6 +1,10 @@
 <?php 
 include('session.php'); 
-$otpSent = isset($_GET['otp_sent']) && $_GET['otp_sent'] == 'true'; // Kiểm tra nếu OTP đã gửi thành công
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+// Kiểm tra nếu OTP đã gửi thành công
+$otpSent = isset($_GET['otp_sent']) && $_GET['otp_sent'] == 'true'; 
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -73,7 +77,7 @@ button {
 }
 
 button:hover {
-    background-color:  #006400;
+    background-color:  #004d00;
 }
 
 button:disabled {
@@ -136,15 +140,15 @@ a.back-to-login:hover {
              
             <form action="xlfgpassword.php" method="POST">
                 <label for="username_or_email" style="color: #0c046d">Nhập tên người dùng hoặc Email:</label>
-                <input type="text" name="username_or_email" required>
-                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                <input type="text" name="username_or_email" required maxlength="255"> <!-- Thêm thuộc tính maxlength để giới hạn độ dài dữ liệu nhập vào -->
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>"> <!-- kiểm tra CSRF token -->
                 <button type="submit">Gửi Mã OTP</button>
             </form>
         <?php else: ?>
             <!-- Form nhập mã OTP -->
             <form action="xacnhan_otp.php" method="POST">
                 <label for="otp">Nhập mã OTP:</label>
-                <input type="text" name="otp" required>
+                <input type="text" name="otp" required maxlength="6"> <!-- Thêm thuộc tính maxlength để giới hạn độ dài mã OTP -->
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <button type="submit">Xác nhận OTP</button>
             </form>
@@ -153,5 +157,8 @@ a.back-to-login:hover {
         <!-- Nút quay lại trang đăng nhập -->
         <a href="login.php" class="back-to-login" style="color: #0c046d">Quay lại trang đăng nhập</a>
     </div>
+
+    
+
 </body>
 </html>

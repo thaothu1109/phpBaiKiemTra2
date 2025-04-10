@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('ketnoi.php'); // Kết nối đến cơ sở dữ liệu
+include('connect.php'); // Kết nối đến cơ sở dữ liệu
 include('session.php'); // Bao gồm mã kiểm tra session
 
 // Kiểm tra CSRF token
@@ -17,36 +17,57 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
 
     if ($newPassword !== $confirmPassword) {
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu xác nhận không khớp.'];
-        header("Location: reset-password.php");
+        header("Location: reset_password.php");
+        exit();
+    }
+
+    // Kiểm tra độ mạnh của mật khẩu
+    if (!preg_match('/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $newPassword)) {
+        $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt.'];
+        header("Location: reset_password.php");
+        exit();
+    }
+
+    // Kiểm tra email trong session
+    if (!isset($_SESSION['otp_email']) || !filter_var($_SESSION['otp_email'], FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['message'] = ['type' => 'error', 'text' => 'Email không hợp lệ. Vui lòng thử lại.'];
+        header("Location: reset_password.php");
         exit();
     }
 
     // Cập nhật mật khẩu mới trong cơ sở dữ liệu
-    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT); // Mã hóa mật khẩu
-    $email = $_SESSION['otp_email']; // Lấy email từ session
+$hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT); // Mã hóa mật khẩu
+$email = $_SESSION['otp_email']; // Lấy email từ session
 
-    $stmt = $pdo->prepare("UPDATE users SET password = :password WHERE email = :email");
-    $stmt->bindParam(':password', $hashedPassword);
-    $stmt->bindParam(':email', $email);
-        // Cập nhật thời điểm thay đổi mật khẩu vào bảng user_log
-        $updateLogQuery = "UPDATE user_log 
-        SET last_password_change = NOW() 
-        WHERE user_id = (SELECT id FROM users WHERE username = :username LIMIT 1)";
-        
-        $updateLogStmt = $pdo->prepare($updateLogQuery);
-        $updateLogStmt->bindValue(':username', $username, PDO::PARAM_STR);
-        $updateLogStmt->execute();
+$stmt = $pdo->prepare("UPDATE users SET password = :password WHERE email = :email");
+$stmt->bindParam(':password', $hashedPassword);
+$stmt->bindParam(':email', $email);
 
-    if ($stmt->execute()) {
-        $_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
-       
-        unset($_SESSION['otp_email']); // Xóa email sau khi đặt lại mật khẩu
-        header("Location: login.php"); // Chuyển hướng đến trang đăng nhập
-        exit();
-    } else {
-        $_SESSION['message'] = ['type' => 'error', 'text' => 'Có lỗi xảy ra khi đặt lại mật khẩu.'];
-        header("Location: reset-password.php");
-        exit();
-    }
+if (!$stmt->execute()) {
+    error_log("Lỗi khi cập nhật mật khẩu cho email: $email");
+    $_SESSION['message'] = ['type' => 'error', 'text' => 'Có lỗi xảy ra khi cập nhật mật khẩu.'];
+    header("Location: reset_password.php");
+    exit();
+}
 
+// Cập nhật thời điểm thay đổi mật khẩu vào bảng user_log
+$stmt = $pdo->prepare("SELECT username FROM users WHERE email = :email");
+$stmt->execute(['email' => $email]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($user) {
+    $username = $user['username'];
+    $updateLogQuery = "UPDATE user_log 
+                       SET last_password_change = NOW() 
+                       WHERE user_id = (SELECT id FROM users WHERE username = :username LIMIT 1)";
+    $updateLogStmt = $pdo->prepare($updateLogQuery);
+    $updateLogStmt->bindValue(':username', $username, PDO::PARAM_STR);
+    $updateLogStmt->execute();
+}
+
+// Xóa email khỏi session và chuyển hướng đến trang đăng nhập
+unset($_SESSION['otp_email']);
+$_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
+header("Location: login.php");
+exit();
 ?>
