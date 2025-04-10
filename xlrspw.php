@@ -65,9 +65,9 @@ if ($user) {
     $updateLogStmt->execute();
 }
 
-// Xóa email khỏi session và chuyển hướng đến trang đăng nhập
+// Xóa email khỏi session và chuyển hướng đến trang reset_password
 unset($_SESSION['otp_email']);
 $_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
-header("Location: login.php");
+header("Location: reset_password.php?redirect_to=login");
 exit();
 ?>

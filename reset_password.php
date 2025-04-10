@@ -1,7 +1,13 @@
 <?php
-#session_start();
+session_start();
 include('connect.php'); // Kết nối đến cơ sở dữ liệu
-include('session.php');
+#include('session.php');
+// Kiểm tra thông báo trong session
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']); // Xóa thông báo sau khi hiển thị
+    $redirectToLogin = isset($_GET['redirect_to']) && $_GET['redirect_to'] === 'login'; // Kiểm tra tham số chuyển hướng
+}
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +16,7 @@ include('session.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đặt Lại Mật Khẩu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,14 +44,16 @@ include('session.php');
         }
 
         .reset-password-container input[type="password"] {
-        width: 80%;
+        width: 100%;
         padding: 15px; /* Tăng kích thước padding */
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         border: 2px solid #006400; /* Thêm khung màu xanh */
-        border-radius: 25px;
+        border-radius: 20px;
         outline: none;
         font-size: 15px; /* Tăng kích thước chữ */
         transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu khung */
+
+        
     }
         .reset-password-container input[type="password"]::placeholder {
         font-style: italic; /* Chữ in nghiêng */
@@ -104,7 +113,7 @@ include('session.php');
     label {
     display: block;
     margin-bottom: 8px;
-    margin-left: 50px;
+    margin-left: 60px;
     text-align: left;
     font-size: 16px;
     color: #0c046d;
@@ -127,37 +136,106 @@ a.back-to-login:hover {
 button:hover {
     background-color:rgb(2, 69, 2); /* Màu tối hơn khi hover */
 }
+.password-wrapper {
+    position: relative; /* Đặt vị trí tương đối để định vị biểu tượng mắt */
+    width: 80%; /* Thu hẹp chiều rộng của wrapper */
+    margin: 15px auto; /* Căn giữa wrapper */
+}
+
+.password-wrapper input {
+    width: 100%; /* Chiều rộng của ô nhập */
+    padding: 12px 40px 12px 15px; /* Chừa khoảng trống bên phải cho biểu tượng mắt */
+    border: 2px solid #006400; /* Khung màu xanh */
+    border-radius: 25px; /* Bo tròn các góc */
+    font-size: 15px; /* Kích thước chữ */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước ô nhập */
+    outline: none; /* Loại bỏ viền khi focus */
+    transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu khung */
+}
+
+.password-wrapper .eye-icon {
+    position: absolute; /* Đặt biểu tượng mắt ở vị trí tuyệt đối */
+    right: 15px; /* Căn lề phải bên trong ô nhập */
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Đưa biểu tượng về chính giữa */
+    cursor: pointer; /* Thay đổi con trỏ khi hover */
+    font-size: 18px; /* Kích thước biểu tượng */
+    color: #006400; /* Màu biểu tượng */
+    background-color: transparent; /* Đảm bảo nền trong suốt */
+    border: none; /* Loại bỏ viền */
+    outline: none; /* Loại bỏ viền khi focus */
+    width: 25px; /* Cố định chiều rộng của biểu tượng */
+    height: 25px; /* Cố định chiều cao của biểu tượng */
+    text-align: center; /* Căn giữa nội dung bên trong biểu tượng */
+}
+
+
     </style>
+
+    <script>
+        // Tự động chuyển hướng sau khi hiển thị thông báo Đặt lại mật khẩu thành công
+        function redirectToLogin() {
+            setTimeout(function () {
+                window.location.href = "login.php";
+            }, 115000); // Chuyển hướng sau 5 giây
+        }
+    </script>
 </head>
 <body>
     <div class="reset-password-container">
     <img src="logo-manhha.png" alt="Toeic Manh Ha" class="logo">
     <h3 style = "margin-bottom: 20px; margin-top: -30px; color: #0c046d;">Đặt lại mật khẩu</h3>
         <!-- Hiển thị thông báo -->
-        <?php
-    if (isset($_SESSION['message'])) {
-        $message = $_SESSION['message'];
-        $message_type = $message['type'] === 'success' ? 'success' : 'error';
-        echo "<div class='$message_type'>" . htmlspecialchars($message['text']) . "</div>";
-        unset($_SESSION['message']); 
-    }
-
-?>
+        <?php if (isset($message)): ?>
+            <div class="<?php echo htmlspecialchars($message['type']); ?>">
+                <?php echo htmlspecialchars($message['text']); ?>
+            </div>
+            <?php if (!empty($redirectToLogin)): ?>
+                <script>
+                    redirectToLogin(); // Gọi hàm chuyển hướng
+                </script>
+            <?php endif; ?>
+        <?php endif; ?>
 
         <form action="xlrspw.php" method="POST">
+        <div class="input-container">
             <label for="new_password">Mật khẩu mới:</label>
-            <input type="password" name="new_password" placeholder="Mật khẩu mới" required minlength="8"
-        pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-        title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
-            
+            <div class="password-wrapper">
+                <input type="password" id="new_password" name="new_password" placeholder="Mật khẩu mới" required minlength="8"
+                    pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                    title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
+                <i class="fas fa-eye-slash eye-icon" onclick="togglePassword('new_password', this)"></i>
+            </div>
+        </div>
+
+        <div class="input-container">
             <label for="confirm_password">Xác nhận mật khẩu mới:</label>
-            <input type="password" name="confirm_password" placeholder="Xác nhận mật khẩu mới" required minlength="8"
-        pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-        title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
-            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-            <button type="submit">Đặt Lại Mật Khẩu</button>
+            <div class="password-wrapper">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Xác nhận mật khẩu mới" required minlength="8"
+                    pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                    title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
+                <i class="fas fa-eye-slash eye-icon" onclick="togglePassword('confirm_password', this)"></i>
+            </div>
+         </div>
+
+         <input type="hidden" name="email" value="<?php echo isset($_SESSION['otp_email']) ? htmlspecialchars($_SESSION['otp_email']) : ''; ?>">        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+         <button type="submit">Đặt Lại Mật Khẩu</button>
         </form>
         <a href="login.php" class="back-to-login" style="color: #0c046d;">Quay lại trang đăng nhập</a>
     </div>
+
+    <script>
+        function togglePassword(fieldId, icon) {
+            const input = document.getElementById(fieldId);
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+
+            // Đổi class FontAwesome
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+        }
+    </script>
+
 </body>
 </html>
