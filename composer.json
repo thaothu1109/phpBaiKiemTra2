@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "name": "duchien/phpbaikiemtra2",
     "description": "Hệ thống xác thực OTP bằng Google Authenticator và gửi email với PHPMailer",
     "authors": [
@@ -12,21 +11,5 @@
         "phpmailer/phpmailer": "^6.8",
         "phpgangsta/googleauthenticator": "dev-master",
         "endroid/qr-code": "*"
-=======
-    "name": "admin/php-bai-kiem-tra2",
-    "description": "Bai kiem tra 2 php",
-    "autoload": {
-        "psr-4": {
-            "Admin\\PhpBaiKiemTra2\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Nhung"
-        }
-    ],
-    "require": {
-        "phpmailer/phpmailer": "^6.9"
->>>>>>> 346819e (xu li mk, tao vendor)
     }
 }

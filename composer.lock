@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "a101a3ca78569512f636564a5f9879ed",
     "packages": [
         {
@@ -235,11 +234,6 @@
             "time": "2019-03-20T00:55:58+00:00"
         },
         {
-=======
-    "content-hash": "5fdd9b0f29fb44458b98c11c63dafa82",
-    "packages": [
-        {
->>>>>>> 346819e (xu li mk, tao vendor)
             "name": "phpmailer/phpmailer",
             "version": "v6.9.3",
             "source": {
@@ -324,13 +318,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-<<<<<<< HEAD
     "stability-flags": {
         "phpgangsta/googleauthenticator": 20
     },
-=======
-    "stability-flags": {},
->>>>>>> 346819e (xu li mk, tao vendor)
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},
