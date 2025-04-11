@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD
 session_start();
+=======
+require_once('session.php');
+>>>>>>> 346819e (xu li mk, tao vendor)
 include('connect.php'); // Kết nối cơ sở dữ liệu
 require 'vendor/autoload.php'; // Đảm bảo autoload được tải cho PHPMailer
 
@@ -42,7 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Port = 587; 
 
             // Đặt người gửi và người nhận
+<<<<<<< HEAD
             $mail->setFrom('donghongnhung2004@gmail.com', 'Toeic Manh Ha'); // Địa chỉ email và tên người gửi
+=======
+            $mail->setFrom('donghongnhung2004@gmail.com', 'HongNhung'); // Địa chỉ email và tên người gửi
+>>>>>>> 346819e (xu li mk, tao vendor)
             $mail->addAddress($user['email']); 
 
             // Cấu hình nội dung email

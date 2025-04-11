@@ -17,6 +17,7 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
 
     if ($newPassword !== $confirmPassword) {
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu xác nhận không khớp.'];
+<<<<<<< HEAD
         header("Location: reset_password.php");
         exit();
     }
@@ -32,10 +33,14 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
     if (!isset($_SESSION['otp_email']) || !filter_var($_SESSION['otp_email'], FILTER_VALIDATE_EMAIL)) {
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Email không hợp lệ. Vui lòng thử lại.'];
         header("Location: reset_password.php");
+=======
+        header("Location: reset-password.php");
+>>>>>>> 346819e (xu li mk, tao vendor)
         exit();
     }
 
     // Cập nhật mật khẩu mới trong cơ sở dữ liệu
+<<<<<<< HEAD
 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT); // Mã hóa mật khẩu
 $email = $_SESSION['otp_email']; // Lấy email từ session
 
@@ -70,4 +75,33 @@ unset($_SESSION['otp_email']);
 $_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
 header("Location: reset_password.php?redirect_to=login");
 exit();
+=======
+    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT); // Mã hóa mật khẩu
+    $email = $_SESSION['otp_email']; // Lấy email từ session
+
+    $stmt = $pdo->prepare("UPDATE users SET password = :password WHERE email = :email");
+    $stmt->bindParam(':password', $hashedPassword);
+    $stmt->bindParam(':email', $email);
+        // Cập nhật thời điểm thay đổi mật khẩu vào bảng user_log
+        $updateLogQuery = "UPDATE user_log 
+        SET last_password_change = NOW() 
+        WHERE user_id = (SELECT id FROM users WHERE username = :username LIMIT 1)";
+        
+        $updateLogStmt = $pdo->prepare($updateLogQuery);
+        $updateLogStmt->bindValue(':username', $username, PDO::PARAM_STR);
+        $updateLogStmt->execute();
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
+       
+        unset($_SESSION['otp_email']); // Xóa email sau khi đặt lại mật khẩu
+        header("Location: login.php"); // Chuyển hướng đến trang đăng nhập
+        exit();
+    } else {
+        $_SESSION['message'] = ['type' => 'error', 'text' => 'Có lỗi xảy ra khi đặt lại mật khẩu.'];
+        header("Location: reset-password.php");
+        exit();
+    }
+
+>>>>>>> 346819e (xu li mk, tao vendor)
 ?>

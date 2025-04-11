@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD
 session_start();
+=======
+require_once('session.php');
+>>>>>>> 346819e (xu li mk, tao vendor)
 
 // Kiểm tra CSRF token
 if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
@@ -24,7 +28,11 @@ if ($userOtp == $_SESSION['otp']) {
     // OTP hợp lệ
     $_SESSION['message'] = ['type' => 'success', 'text' => 'Xác thực OTP thành công! Bạn có thể đặt lại mật khẩu.'];
     unset($_SESSION['otp']); // Xóa OTP sau khi sử dụng
+<<<<<<< HEAD
     header("Location: reset_password.php"); // Chuyển đến trang đặt lại mật khẩu
+=======
+    header("Location: reset-password.php"); // Chuyển đến trang đặt lại mật khẩu
+>>>>>>> 346819e (xu li mk, tao vendor)
     exit();
 } else {
     // OTP không hợp lệ
