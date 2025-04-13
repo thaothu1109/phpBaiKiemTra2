@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Host = 'smtp.gmail.com'; // Cấu hình SMTP của Gmail
             $mail->SMTPAuth = true;
             $mail->Username = 'donghongnhung2004@gmail.com'; // Email của bạn
-            $mail->Password = 'drgx pbqd xllr zkkz'; // Mật khẩu ứng dụng Gmail của bạn
+            $mail->Password = 'gthl jcfb pnnl nhvw'; // Mật khẩu ứng dụng Gmail của bạn
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
             $mail->Port = 587; 
 
@@ -50,16 +50,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Cấu hình nội dung email
             $mail->isHTML(true);
-            $mail->Subject = 'Ma OTP de thay doi mat khau';
-            $mail->Body = "<p>Đây là mã OTP của bạn: <strong>$otp</strong></p><p>Vui lòng nhập mã này để tiếp tục thay đổi mật khẩu của bạn.</p>";
+            $mail->Subject = 'Mã OTP để thay đổi mật khẩu';
+            $mail->CharSet = 'UTF-8'; // Đặt charset để hỗ trợ tiếng Việt
+            $mail->Body = 
+            "<p>Xin chào {$user['username']}</p>
+            <p>Đây là mã OTP của bạn: <strong>$otp</strong></p>
+            <p>Vui lòng nhập mã này để tiếp tục thay đổi mật khẩu của bạn.</p>";
 
             // Gửi email
-            if ($mail->send()) {
-                $_SESSION['message'] = ['type' => 'success', 'text' => "Mã OTP đã được gửi tới email của bạn."];
+           if ($mail->send()) {
+                $_SESSION['message'] = ['type' => 'success', 'text' => "Mã OTP đã được gửi tới email của bạn<strong> Vui lòng kiểm tra cả hộp thư rác (spam)</strong> nếu không thấy trong hộp thư đến."];
                 $_SESSION['otp_sent'] = true; // Đánh dấu OTP đã được gửi
-                header("Location: fgpassword.php?otp_sent=true"); // Chuyển hướng đến trang xác minh OTP
-                exit();
+               header("Location: fgpassword.php?otp_sent=true"); // Chuyển hướng đến trang xác minh OTP
+               exit();
             }
+            
         } catch (Exception $e) {
             // Lỗi khi gửi email OTP
             $_SESSION['message'] = ['type' => 'error', 'text' => "Lỗi khi gửi email OTP: " . $mail->ErrorInfo];
