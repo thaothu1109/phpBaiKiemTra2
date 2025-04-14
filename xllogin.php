@@ -1,4 +1,12 @@
 <?php
+// Kiểm tra nếu không phải HTTPS, chuyển hướng sang HTTPS
+if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
+    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header('Location: ' . $redirect);
+    exit();
+}
+?>
+<?php
   session_start();
 //Thiết lập múi giờ và khởi tạo session
 date_default_timezone_set('Asia/Ho_Chi_Minh'); // Thay đổi múi giờ nếu cần

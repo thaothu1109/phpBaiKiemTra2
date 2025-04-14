@@ -1,4 +1,12 @@
 <?php
+// Kiểm tra nếu không phải HTTPS, chuyển hướng sang HTTPS
+if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
+    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header('Location: ' . $redirect);
+    exit();
+}
+?>
+<?php
 // Kết nối CSDL
 require 'connect.php'; // Sử dụng kết nối PDO từ file connect.php
 require_once 'vendor/autoload.php';
