@@ -221,36 +221,6 @@ nav ul li a:hover {
     scrollbar-color: transparent transparent;
 }
 
-.table-container:hover {
-    scrollbar-color: #888 #f1f1f1;
-}
-
-.loaisp:-webkit-scrollbar,
-.table-container:-webkit-scrollbar {
-    width: 5px;
-}
-
-.loaisp:-webkit-scrollbar-track,
-.table-container:-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 20px;
-}
-
-.loaisp:-webkit-scrollbar-thumb,
-.table-container:-webkit-scrollbar-thumb {
-    background-color: transparent; 
-    border-radius: 20px;
-    transition: background-color 0.3s ease; 
-}
-
-.loaisp:hover:-webkit-scrollbar-thumb,
-.table-container:hover:-webkit-scrollbar-thumb {
-    background-color: #888; 
-    border-radius: 20px;
-}
-
-
-
 .trang {
     text-align: center; /* Căn giữa */
     margin: 20px 0; /* Khoảng cách trên và dưới */
@@ -333,7 +303,28 @@ nav ul li a:hover {
     border: 1px solid #155724;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; /* Xóa khoảng cách mặc định của body */
+    padding: 0; /* Xóa khoảng cách mặc định của body */
+    display: flex; /* Sử dụng flexbox để căn chỉnh */
+    height: 100vh; /* Chiều cao toàn màn hình */
+    overflow: hidden; /* Ẩn thanh cuộn ngang nếu có */
+}
 
+.loaisp {
+    width: 20%; /* Chiều rộng sidebar */
+    max-width: 300px; /* Đặt chiều rộng tối đa */
+    height: 100vh; /* Chiều cao toàn màn hình */
+    background-color: #f8f9fa; /* Màu nền sidebar */
+    padding: 15px; /* Khoảng cách bên trong */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+.sp {
+    flex: 1; /* Chiếm phần còn lại của màn hình */
+    padding: 20px; /* Khoảng cách bên trong */
+}
 
 
     </style>

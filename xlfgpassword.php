@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Host = 'smtp.gmail.com'; // Cấu hình SMTP của Gmail
             $mail->SMTPAuth = true;
             $mail->Username = 'donghongnhung2004@gmail.com'; // Email của bạn
-            $mail->Password = 'drgx pbqd xllr zkkz'; // Mật khẩu ứng dụng Gmail của bạn
+            $mail->Password = 'gthl jcfb pnnl nhvw'; // Mật khẩu ứng dụng Gmail của bạn
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
             $mail->Port = 587; 
 
