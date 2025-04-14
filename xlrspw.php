@@ -16,11 +16,12 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
     $confirmPassword = $_POST['confirm_password'];
 
     if ($newPassword !== $confirmPassword) {
-        $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu xác nhận không khớp.'];
-        header("Location: reset_password.php");
-        exit();
+        $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu xác nhận không khớp.'];  
+        header ("Location: reset_password.php");    
+        exit();  
+       
     }
-
+    //
     // Kiểm tra độ mạnh của mật khẩu
     if (!preg_match('/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $newPassword)) {
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt.'];
@@ -32,10 +33,12 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
     if (!isset($_SESSION['otp_email']) || !filter_var($_SESSION['otp_email'], FILTER_VALIDATE_EMAIL)) {
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Email không hợp lệ. Vui lòng thử lại.'];
         header("Location: reset_password.php");
+      
         exit();
     }
 
     // Cập nhật mật khẩu mới trong cơ sở dữ liệu
+    
 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT); // Mã hóa mật khẩu
 $email = $_SESSION['otp_email']; // Lấy email từ session
 
@@ -70,4 +73,6 @@ unset($_SESSION['otp_email']);
 $_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
 header("Location: reset_password.php?redirect_to=login");
 exit();
+// 
 ?>
+//

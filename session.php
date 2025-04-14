@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -37,4 +38,5 @@ if (!isset($_SESSION['CREATED'])) {
     session_regenerate_id(true); // Tạo session ID mới
     $_SESSION['CREATED'] = time();
 }
+// Kết nối đến cơ sở dữ liệu
 ?>
