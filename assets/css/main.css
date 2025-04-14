@@ -9,7 +9,7 @@
     --white: #fff;
     --black: #000;
     --text-color: #333;
-    --green: #18b363;
+    --green: #306F42;
 }
 
 ul,
@@ -279,7 +279,7 @@ header {
 }
 
 .filter-btn{
-    background-color: #6ff3a8;
+    background-color: #79BD77;
     height: 30px;
     color: var(--white);
     width: 75px;
@@ -1014,7 +1014,7 @@ h2.product-title {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #eee;
-    background-color: var(--white);
+    background-color: #c3f2c2;
     position: sticky;
     bottom: 0;
 }
@@ -1672,7 +1672,7 @@ input[type=number] {
 /* Footer */
 /* Css footer */
 .footer {
-    background-color: #f2f2f2;
+    background-color: #e0fbeb;
     margin-top: 30px;
     border-top: 4px solid var(--red);
 }
@@ -1900,7 +1900,7 @@ input[type=number] {
 }
 
 .copyright-wrap {
-    background: #f3f5f7;
+    background: #e0fbeb;
     color: var(--text-color);
     margin: unset;
     padding: 18px 0;

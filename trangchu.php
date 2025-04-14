@@ -1,399 +1,452 @@
-<?php
-// Kiểm tra nếu không phải HTTPS, chuyển hướng sang HTTPS
-if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
-    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    header('Location: ' . $redirect);
-    exit();
-}
-?>
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toeic Mạnh Hà</title>
-    <style>
-        header {
-            text-align: center;
-            color: white;
-            background-color: pink;
-            padding: 20px;
-            font-size: 20px;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            padding: 10px;
-            font-size: 15px;
-        }
-        table {
-            width: 100%;
-            border: none;
-            border-collapse: collapse; /* Gộp viền */
-            font-size: 15px;
-        }
-        tr, td {
-            text-align: center;
-            border: none;
-            color: #333333; 
-        }
-        td {
-            height: 50px;
-            overflow: hidden;
-        }
-        img {
-            width: 100px;
-            height: 100px;
-            display: block;
-            margin: 0 auto 10px auto;
-        }
-        .pagination {
-            margin-left: 400px;
-            text-decoration: underline;
-            color: #000;
-        }
-        .pagination a {
-            font-size: 10px;
-            padding: 10px;
-            color: blue;
-            border-radius: 5px;
-            text-align: center;
-        }
-   
-        .sp {
-            text-align: center;
-            padding-right: 10px;
-            padding-left : 10px;
-            float: left;
-            width: 80%; 
-            max-height: 470px; /* Chiều cao tối đa */
-        }
-        p{
-            text-align: center;
-            font-size: 16px;
-        }
-        nav ul {
-    list-style-type: none;
-    padding: 5px;
-    text-align: center;
-    color: black;
-    margin: 0; /* Xóa khoảng cách mặc định giữa các mục */
-}
-
-nav ul li {
-    
-    margin: 0px 0; /* Khoảng cách dọc giữa các li */
-}
-
-nav ul li a {
-    padding: 10px;
-    text-align: center;
-    text-decoration: none; 
-    color: #0c046d;
-    border-radius: 30px;
-    display: block;
-    
-}
-
-nav ul li a:hover {
-    background-color: white; 
-    color: #0c046d;
-    border-radius: 30px;
-    border: 0.1px solid #155724; /* Thêm đường viền màu xanh */
-}
-
-
-        .khoahoc a {
-            background-color: #155724; 
-            color: white;
-            border-radius: 30px;
-            display: block;
-        
-        }
-        h1, pre {
-            font-size: 15px;
-            text-align: left;
-            margin-bottom: 20px;
-            color: #0c046d;
-        }
-        h2 {
-            font-size: 12px;
-            text-align: left;
-        }
-        p {
-            color: #0c046d;
-            text-align: center;
-            font-size: 16px;
-        }
-        .bkhoahoc {
-            top: -10px;
-            margin-bottom: 20px;
-            width: 100%;
-            background-color: #155724;
-            color: white; 
-        
-        }
- 
-        .bkhoahoc th {
-             margin-top: -10px;
-            width: 1000px;
-            background-color: #155724;
-            color: white;
-            padding: 8px;
-        
-            margin: 0; 
-            position: sticky;
-            top: 0px;
- 
-            z-index: 1; /* Đảm bảo phần tiêu đề không bị che */
-        }
-
-
-        tr:hover {
-            background-color: #f2f2f2; /* Màu nền khi hover */
-            transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
-
-        }
-        .search-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px; 
-        }
-        .search-container input {
-            padding-left: 38px; /* Khoảng cách bên trái cho biểu tượng */
-            height: 40px; /* Chiều cao của ô nhập */
-            border: 1px solid #ccc; /* Đường viền */
-            border-radius: 20px; /* Bo góc */
-            width: 300px; /* Chiều rộng của ô nhập */
-        }
-        .fa-magnifying-glass {
-            position: absolute;
-            left: 10px;
-            color: #999; 
-            font-size: 18px; 
-        }
-        .search-button {
-            margin-left: 10px; /* Khoảng cách giữa ô nhập và nút */
-            padding: 10px 15px; /* Khoảng cách trong nút */
-            border: none; /* Không có đường viền */
-            border-radius: 20px; /* Bo góc nút */
-            text-decoration: none;
-            font-size: 14px;
-            background-color: #155724;  /* Màu nền nút */
-            color: white; /* Màu chữ */
-            cursor: pointer; /* Con trỏ chuột khi hover */
-        }
-        .search-button:hover {
-            background-color: #155724; /* Màu nền khi hover */
-        }
-        .fa-circle-plus {
-            margin-top: -25px;
-            margin-left: 300px; 
-            padding: 10px 15px; /* Khoảng cách trong nút */
-            border: none; /* Không có đường viền */
-            border-radius: 20px; /* Bo góc nút */
-            background-color: #155724; /* Màu nền nút thêm */
-            color: white; /* Màu chữ */
-            cursor: pointer; /* Con trỏ chuột khi hover */
-            position: absolute;  
-        }
-        .fa-circle-plus:hover {
-            background-color: #155724; 
-        }
-
-.loaisp {
-    float: left;
-    width: 15%;
-    padding-right: 15px;
-    padding-left : 15px;
-    border: 0px solid gray;
-    max-height: 500px;
-    overflow-y: scroll; 
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent; 
-}
-
-.loaisp:hover {
-    scrollbar-color: #888 #f1f1f1; 
-}
-
-.table-container {
-    width: 100%;
-    float: center;
-    border: 0px solid gray;
-    height: 340px;
-    overflow-y: scroll; 
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-}
-
-.trang {
-    text-align: center; /* Căn giữa */
-    margin: 20px 0; /* Khoảng cách trên và dưới */
-}
-
-.trang a {
-    display: inline-block; /* Hiển thị theo dạng khối */
-    padding: 10px 15px; /* Khoảng cách bên trong */
-    margin: 0 5px; /* Khoảng cách giữa các liên kết */
-    text-decoration: none; /* Bỏ gạch chân */
-    color: #155724; /* Màu chữ */
-    background-color: #f8f9fa; /* Màu nền */
-    border: 1px solid #155724; /* Viền */
-    border-radius: 20px; /* Bo góc */
-    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển màu */
-}
-
-.trang a:hover {
-    background-color: #155724; /* Màu nền khi hover */
-    color: white; /* Màu chữ khi hover */
-}
-
-.trang span {
-    display: inline-block; /* Hiển thị theo dạng khối */
-    padding: 10px 15px; /* Khoảng cách bên trong */
-    margin: 0 5px; /* Khoảng cách giữa các liên kết */
-    background-color: #155724; /* Màu nền cho trang hiện tại */
-    color: white; /* Màu chữ cho trang hiện tại */
-    border-radius: 20px; /* Bo góc */
-}
-.icon-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .icon-container a {
-            color: #155724;
-            font-size: 25px;
-            text-decoration: none;
-        }
-
-        .icon-container a:hover {
-            color: #155724;
-        }
- .dropdown-account {
-    position: relative;
-    display: inline-block;
-    font-size: 14px;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1000; 
-    right: 0; 
-    border-radius: 20px;
-}
-
-.dropdown-account:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown-content a {
-    color: #155724;
-    padding: 15px 18px;
-    text-decoration: none;
-    display: block;
-    font-size: 15px;
-}
-
-.dropdown-content a:hover {
-   
-    border-radius: 20px;
-    border: 1px solid #155724;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0; /* Xóa khoảng cách mặc định của body */
-    padding: 0; /* Xóa khoảng cách mặc định của body */
-    display: flex; /* Sử dụng flexbox để căn chỉnh */
-    height: 100vh; /* Chiều cao toàn màn hình */
-    overflow: hidden; /* Ẩn thanh cuộn ngang nếu có */
-}
-
-.loaisp {
-    width: 20%; /* Chiều rộng sidebar */
-    max-width: 300px; /* Đặt chiều rộng tối đa */
-    height: 100vh; /* Chiều cao toàn màn hình */
-    background-color: #f8f9fa; /* Màu nền sidebar */
-    padding: 15px; /* Khoảng cách bên trong */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
-}
-
-.sp {
-    flex: 1; /* Chiếm phần còn lại của màn hình */
-    padding: 20px; /* Khoảng cách bên trong */
-}
-
-
-    </style>
+    <link href='assets/img/logotieude2.svg' rel='icon' type='image/x-icon' />
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/home-responsive.css">
+    <link rel="stylesheet" href="./assets/css/toast-message.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
-    <?php
-        $i = 1;
-        include("connect.php");
-    ?>
-
-    <nav class="loaisp">
-    <img src="logo-manhha.png" alt="Khoá học" style="width: 100px; height: 60px; "> 
-        <p><strong>Quản lý chung</strong></p>
-       
-        <ul>
-            <li class="khoahoc"><a href="Khoahoc.php">Khoá học</a></li>
-        </ul>
-        <ul>
-            <li><a href="Lophoc.php">Lớp học</a></li>
-        </ul>
-        <ul>
-            <li><a href="Giaovien.php">Giáo viên</a></li>
-        </ul>
-        <ul>
-            <li><a href="Trogiang.php">Trợ giảng</a></li>
-        </ul>
-        <ul>
-            <li><a href="Hocvien.php">Học viên</a></li>
-        </ul>
+     <script>
         
-        <p><strong>Quản lý học viên</strong></p>
-        <ul>
-            <li><a href="Diemdanh.php">Điểm danh</a></li>
-        </ul>
-        <ul>
-            <li><a href="Baitapvenha.php">Bài tập về nhà</a></li>
-        </ul>
-        <ul>
-            <li><a href="Baikiemtra.php">Bài kiểm tra</a></li>
-        </ul>
+        function loadHtml(page) {
+            // Cuộn lên đầu trang một cách mượt
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        <p><strong>Quản lý tài liệu</strong></p>
-        <ul>
-            <li><a href="DanhSachTaiLieu.php">Danh sách tài liệu</a></li>
-        </ul>
-        <ul>
-            <li><a href="CapTaiLieu.php">Cấp tài liệu</a></li>
-        </ul>
-    </nav>
-    <nav class="sp">
-    <div class="icon-container">
-    <a  title="Ngôn ngữ"><i class="fas fa-globe"></i></a>
-    <a title="Thông báo"><i class="fas fa-bell"></i></a>
-    <div class="dropdown-account">
-        <a title="Tài khoản"><i class="fas fa-user-circle"></i></a>
-        <div class="dropdown-content">
-            <a href="user_password.php">Đổi mật khẩu</a>
-            <a href="logout.php">Đăng xuất</a>
+            // Ẩn các phần khác nếu cần
+
+            document.getElementById('trangchu').classList.add('hide'); // add hide là ẩn trang chủ, remove hide hiển thị trang chủ
+            document.getElementById('order-history').classList.remove('open'); //remove open ẩn trang order, add open là hiển thị trang order
+            document.getElementById('account-user').classList.remove('open');
+            document.getElementById('content').classList.add('open');
+
+            // Sử dụng fetch để tải nội dung từ tệp HTML
+            fetch(page)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Đặt nội dung HTML vào phần 'content'
+                    document.getElementById('content').innerHTML = data;
+                })
+                .catch(error => {
+                    // Xử lý lỗi nếu có
+                    document.getElementById('content').innerHTML = 'Không thể tải nội dung: ' + error.message;
+                });
+        }
+        </script>
+<body>
+    <!--Header-->   
+
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-left">
+                    <ul class="header-top-list">
+                        <li><a href=""><i class="fa-regular fa-phone"></i> 0123 456 789 (miễn phí)</a></li>
+                        <li><a href=""><i class="fa-light fa-location-dot"></i> Xem vị trí cửa hàng</a></li>
+                    </ul>
+                </div>
+                <div class="header-top-right">
+                    <ul class="header-top-list">
+                        <li><a href="">Giới thiệu</a></li>
+                        <li><a href="">Cửa hàng</a></li>
+                        <li><a href="">Chính sách</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
+        <div class="header-middle">
+            <div class="container">
+                <div class="header-middle-left">
+                    <div class="header-logo">
+                        <a href="">
+                            <img src="logo-manhha.png" alt="" class="header-logo-img">
+                        </a>
+                    </div>
+                </div>
+                <div class="header-middle-center">
+                    <form action="" class="form-search">
+                        <span class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" class="form-search-input" placeholder="Tìm kiếm khóa học..."
+                            oninput="searchProducts()">
+                        <button class="filter-btn"><i class="fa-solid fa-filter"></i><span>Lọc</span></button>
+                    </form>
+                </div>
+                <div class="header-middle-right">
+                    <ul class="header-middle-right-list">
+                        <li class="header-middle-right-item dnone open" onclick="openSearchMb()">
+                            <div class="cart-icon-menu">
+                                <i class="fa-solid fa-basket-shopping"></i>
+                            </div>
+                        </li>
+                        <li class="header-middle-right-item close" onclick="closeSearchMb()">
+                            <div class="cart-icon-menu">
+                                <i class="fa-solid fa-basket-shopping"></i>
+                            </div>
+                        </li>
+                        <li class="header-middle-right-item dropdown open">
+                            <i class="fa-solid fa-user"></i>
+                            <div class="auth-container">
+                                <span class="text-tk">Tài khoản </span>
+                            </div>
+                            <ul class="header-middle-right-menu">
+                                <li><a id="login" href="user_password.php"><i class="fa-solid fa-right-to-bracket"></i> Đổi mật khẩu</a></li>
+                                <li><a id="signup" href="logout.php"><i class="fa-solid fa-user-plus"></i> Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="header-bottom">
+        <div class="container">
+            <ul class="menu-list">
+                <li class="menu-list-item"><a href="#" class="menu-link">Trang chủ</a></li>
+                <li class="menu-list-item"><a href="javascript:;" class="menu-link">Tài liệu</a></li>
+                <li class="menu-list-item" onclick="showCategory('TOEIC 450')"><a href="javascript:;" class="menu-link">TOEIC 450</a></li>
+                <li class="menu-list-item" onclick="showCategory('TOEIC 650')"><a href="javascript:;" class="menu-link">TOEIC 650</a></li>
+                <li class="menu-list-item" onclick="showCategory('TOEIC 800')"><a href="javascript:;" class="menu-link">TOEIC 800</a></li>
+                <li class="menu-list-item" onclick="showCategory('TOEIC SPEAKING')"><a href="javascript:;" class="menu-link">TOEIC SP</a></li>
+                <li class="menu-list-item" onclick="showCategory('TOEIC WRITING')"><a href="javascript:;" class="menu-link">TOEIC WR</a></li>
+                <li class="menu-list-item" onclick="showCategory('TOEIC 4SKILLS')"><a href="javascript:;" class="menu-link">TOEIC 4SKILLS</a></li>
+                <li class="menu-list-item dropdown">
+             <li class="menu-list-item dropdown">
+            <a href="javascript:;" class="menu-link">Về chúng tôi</a>
+            <div class="dropdown-content">
+             <a href="javascript:;" onclick="loadHtml('gioithieu.html')">Giới thiệu</a>
+              <a href="javascript:;" onclick="loadHtml('tintuc.html')">Tin tức</a>
+              <a href="javascript:;" onclick="loadHtml('dieukhoan.html')">Điều khoản</a>
+              <a href="javascript:;" onclick="loadHtml('lienhe.html')">Liên hệ</a>
+            </div>
+    </li>
+    </ul>
+        </div>
+    </nav>
+     <!-- Tính năng lọc  -->
+    <div class="advanced-search">
+        <div class="container">
+            <div class="advanced-search-category">
+                <span>Phân loại </span>
+                <select name="" id="advanced-search-category-select" onchange="searchProducts()">
+                    <option>ETS 2025</option>
+                    <option>ETS 2024</option>
+                    <option>ETS 2023</option>
+                    <option>ETS 2022</option>
+                    <option>ETS 2021</option>
+                    <option>ETS 2020</option>
+                </select>
+            </div>            
+        </div>
+    </div>
+    <main class="main-wrapper">
+        <div class="container" id="trangchu">
+            <div class="home-slider">
+                <img src="banner.jpg" alt="">
+                <!-- <img src="./assets/img/banner-2.png" alt="">
+                <img src="./assets/img/banner-3.png" alt="">
+                <img src="./assets/img/banner-4.png" alt="">
+                <img src="./assets/img/banner-5.png" alt=""> -->
+            </div>
+            
+            <div class="home-title-block" id="home-title">
+                <h2 class="home-title">Khám phá những khóa học mới nhất</h2>
+            </div>
+            <div class="home-products" id="home-products">
+            </div>
+            <div class="page-nav">
+                <ul class="page-nav-list">
+                </ul>
+            </div>
+         
+  </div>
+            <div id="content" class="content-wrapper">
+                
+            </div>    
+    </main>
 
+    <div class="modal product-detail">
+        <button class="modal-close close-popup"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-container mdl-cnt" id="product-detail-content">
+        </div>
+    </div>
+    
+    
+    
+    <footer class="footer">
+        <div class="widget-area">
+            <div class="container">
+                <div class="widget-row">
+                    <div class="widget-row-col-1">
+                        <h3 class="widget-title">Về chúng tôi</h3>
+                        <div class="widget-row-col-content">
+                            <p>Toeic Mạnh Hà - Địa chỉ luyện thi TOEIC tin cậy, chất lượng hàng đầu tại Hà Nội</p>
+                        </div>
+                        <div class="widget-social">
+                            <div class="widget-social-item">
+                                  <a href="#" class="social-icon" >
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </div>
+                            <div class="widget-social-item">
+                                <a href="#" class="social-icon" >
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                            <div class="widget-social-item">
+                                 <a href="#" class="social-icon" >
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                            <div class="widget-social-item">
+                                 <a href="#" class="social-icon" >
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-row-col">
+                        <h3 class="widget-title">Giới thiệu</h3>
+                        <ul class="widget-contact">
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="loadHtml('gioithieu.html')"><span>Về chúng tôi</span></a>  
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>Khóa học</span>
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                  <a href="javascript:;" onclick="loadHtml('dieukhoan.html')"><span>Điều khoản</span></a>  
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="loadHtml('lienhe.html')"><span>Liên hệ</span></a>  
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="loadHtml('tintuc.html')"><span>Tin tức</span></a>  
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget-row-col">
+                        <h3 class="widget-title">Khóa học</h3>
+                        <ul class="widget-contact">
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="showCategory('TOEIC 450')"><span>TOEIC 450</span></a>
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="showCategory('TOEIC 650')"><span>TOEIC 650</span></a>
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="showCategory('TOEIC 800')"><span>TOEIC 800</span></a>
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                   <a href="javascript:;" onclick="showCategory('TOEIC SPEAKING')"><span>TOEIC SP</span></a>
+                                </a>
+                            </li>
+                            <li class="widget-contact-item">
+                                <a href="">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <a href="javascript:;" onclick="showCategory('TOEIC WRITING')"><span>TOEIC WR</span></a>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget-row-col-1">
+                        <h3 class="widget-title">Liên hệ</h3>
+                        <div class="contact">
+                            <div class="contact-item">
+                                <div class="contact-item-icon">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div class="contact-content">
+                                    <span>12 Chùa Bộc, Quang Trung, Đống Đa, Hà Nội</span>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-item-icon">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div class="contact-content contact-item-phone">
+                                    <span>0123 456 789</span>
+                                    <br />
+                                    <span>0987 654 321</span>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-item-icon">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div class="contact-content conatct-item-email">
+                                    <span>abc@domain.com</span><br />
+                                    <span>infoabc@domain.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="copyright-content">
+                <p>Bản quyền từ TOEIC Mạnh Hà</p>
+            </div>
+        </div>
+    </div>
+    <div class="back-to-top">
+        <a href="#"><i class="fa-solid fa-arrow-up"></i>
+    </div>
+    <div class="checkout-page">
+        <div class="checkout-header">
+            <div class="checkout-return">
+                <button onclick="closecheckout()"><i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+            <h2 class="checkout-title">Thanh toán</h2>
+        </div>
+        <main class="checkout-section container">
+            <div class="checkout-col-left">
+                <div class="checkout-row">
+                    <div class="checkout-col-title">
+                        Thông tin đơn hàng
+                    </div>
+                    <div class="checkout-col-content">
+                        <div class="content-group">
+                            <p class="checkout-content-label">Hình thức giao nhận</p>
+                            <div class="checkout-type-order">
+                                <button class="type-order-btn active" id="giaotannoi">
+                                    <i class="fa-solid fa-truck"
+                                        style="--fa-secondary-opacity: 1.0; --fa-primary-color: dodgerblue; --fa-secondary-color: #ffb100;"></i>
+                                    Giao tận nơi
+                                </button>
+                                <button class="type-order-btn" id="tudenlay">
+                                    <i class="fa-brands fa-creative-commons-by"
+                                        style="--fa-secondary-opacity: 1.0; --fa-primary-color: pink; --fa-secondary-color: palevioletred;"></i>
+                                    Tự đến lấy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="content-group">
+                            <p class="checkout-content-label">Ngày giao hàng</p>
+                            <div class="date-order">
+                            </div>
+                        </div>
+                        <div class="content-group chk-ship" id="giaotannoi-group">
+                            <p class="checkout-content-label">Chọn đơn vị vận chuyển</p>
+                            <div class="delivery-time">
+                                <input type="radio" name="giaongay" id="giaongay" class="radio">
+                                <label for="giaongay">Giao hàng tiết kiệm</label>
+                            </div>
+                            <div class="delivery-time">
+                                <input type="radio" name="giaongay" id="deliverytime" class="radio">
+                                <label for="deliverytime">Giao hàng nhanh</label>
+                            </div>
+                        </div>
+                        <div class="content-group" id="tudenlay-group">
+                            <p class="checkout-content-label">Lấy hàng tại chi nhánh</p>
+                            <div class="delivery-time">
+                                <input type="radio" name="chinhanh" id="chinhanh-1" class="radio">
+                                <label for="chinhanh-1">12 Chùa Bộc, Quang Trung, Đống Đa</label>
+                            </div>
+                            <div class="delivery-time">
+                                <input type="radio" name="chinhanh" id="chinhanh-2" class="radio">
+                                <label for="chinhanh-2">Học viện Ngân Hàng</label>
+                            </div>
+                        </div>
+                        <div class="content-group">
+                            <p class="checkout-content-label">Ghi chú đơn hàng</p>
+                            <textarea type="text" class="note-order" placeholder="Nhập ghi chú"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-row">
+                    <div class="checkout-col-title">
+                        Thông tin người nhận
+                    </div>
+                    <div class="checkout-col-content">
+                        <div class="content-group">
+                            <form action="" class="info-nhan-hang">
+                                <div class="form-group">
+                                    <input id="tennguoinhan" name="tennguoinhan" type="text"
+                                        placeholder="Tên người nhận" class="form-control">
+                                    <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input id="sdtnhan" name="sdtnhan" type="text" placeholder="Số điện thoại nhận hàng"
+                                        class="form-control">
+                                    <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input id="diachinhan" name="diachinhan" type="text" placeholder="Địa chỉ nhận hàng"
+                                        class="form-control chk-ship">
+                                    <span class="form-message"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-col-right">
+                <p class="checkout-content-label">Đơn hàng</p>
+                <div class="bill-total" id="list-order-checkout">
+                </div>
+                <div class="bill-payment">
+                    <div class="total-bill-order">
+                    </div>
+                    <div class="policy-note">
+                        Bằng việc bấm vào nút “Đặt hàng”, tôi đồng ý với
+                        <a href="#" target="_blank">chính sách hoạt động</a>
+                        của chúng tôi.
+                    </div>
+                </div>
+                <div class="total-checkout">
+                    <div class="text">Tổng tiền</div>
+                    <div class="price-bill">
+                        <div class="price-final" id="checkout-cart-price-final">0</div>
+                    </div>
+                </div>
+                <button class="complete-checkout-btn">Đặt hàng</button>
+            </div>
+        </main>
+    </div>
+    <div id="toast"></div>
+    <script src="./js/initialization.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/checkout.js"></script>
+    <script src="./js/toast-message.js"></script>
 </body>
 </html>
-    </div>
-</div>
-
