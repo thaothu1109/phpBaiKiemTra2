@@ -186,7 +186,7 @@ button:hover {
         function redirectToLogin() {
             setTimeout(function () {
                 window.location.href = "login.php";
-            }, 115000); // Chuyển hướng sau 5 giây
+            }, 8000); // Chuyển hướng sau 8 giây
         }
     </script>
 </head>
