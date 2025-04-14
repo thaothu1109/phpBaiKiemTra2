@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Quản lý khoá học</title>
+    <title>Toeic Mạnh Hà</title>
     <style>
         header {
             text-align: center;
