@@ -1,7 +1,35 @@
-
+<?php
+session_start();
+if (isset($_SESSION['success_message'])) {
+    echo "<div class='success'>" . $_SESSION['success_message'] . "</div>";
+    unset($_SESSION['success_message']); // Xóa thông báo sau khi hiển thị
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<style>
+    .success {
+        color: #27ae60;
+        background-color: #eafaf1;
+        border: 1px solid #27ae60;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 10px; /* Bo góc tròn */
+        text-align: center;
+        position: relative;
+        animation: fadeOut 3s forwards; /* Thêm hiệu ứng mờ dần */
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
