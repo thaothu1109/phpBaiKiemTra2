@@ -186,7 +186,7 @@ button:hover {
         function redirectToLogin() {
             setTimeout(function () {
                 window.location.href = "login.php";
-            }, 5000); // Chuyển hướng sau 5 giây
+            }, 3000); // Chuyển hướng sau 5 giây
         }
     </script>
 </head>
@@ -213,7 +213,6 @@ button:hover {
                 <input type="password" id="new_password" name="new_password" placeholder="Mật khẩu mới" required minlength="8"
                     pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
                     title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
-                <i class="fas fa-eye-slash eye-icon" onclick="togglePassword('new_password', this)"></i>
             </div>
         </div>
 
@@ -223,7 +222,6 @@ button:hover {
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Xác nhận mật khẩu mới" required minlength="8"
                     pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
                     title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
-                <i class="fas fa-eye-slash eye-icon" onclick="togglePassword('confirm_password', this)"></i>
             </div>
          </div>
 
@@ -234,17 +232,6 @@ button:hover {
         <a href="login.php" class="back-to-login" style="color: #0c046d;">Quay lại trang đăng nhập</a>
     </div>
 
-    <script>
-        function togglePassword(fieldId, icon) {
-            const input = document.getElementById(fieldId);
-            const isHidden = input.type === "password";
-            input.type = isHidden ? "text" : "password";
-
-            // Đổi class FontAwesome
-            icon.classList.toggle("fa-eye");
-            icon.classList.toggle("fa-eye-slash");
-        }
-    </script>
-
+   
 </body>
 </html>
