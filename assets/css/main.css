@@ -266,7 +266,7 @@ header {
     font-size: 20px;
     height: 40px;
     padding: 0 15px;
-    color: #6ff3a8;
+    color: #88BB7E;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -279,7 +279,7 @@ header {
 }
 
 .filter-btn{
-    background-color: #79BD77;
+    background-color: #88BB7E;
     height: 30px;
     color: var(--white);
     width: 75px;

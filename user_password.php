@@ -6,7 +6,7 @@ include('session.php'); // Tạo CSRF token
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Change Password</title>
+  <title>Thay đổi mật khẩu</title>
   <style>
         /* Đặt nền toàn trang */
         body {
@@ -146,6 +146,42 @@ include('session.php'); // Tạo CSRF token
             width: 150px; /* Tăng kích thước logo */
           
         }
+        .forgot-password {
+       text-align: right;
+       margin: 10px 0;
+        }
+
+        .forgot-password a {
+       color: #006400;
+       font-size: 14px;
+       text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+       text-decoration: underline;
+        }
+        .back-to-trangchu {
+    width: 40%;
+    padding: 10px;
+    background-color: none;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+    a.back-to-trangchu:hover {
+        text-decoration: underline;
+        color:rgb(19, 64, 215); /* Màu chữ khi hover */
+        background-color: white; /* Màu nền khi hover */
+
+    }
+
+
     </style>
 </head>
 <body>
@@ -168,7 +204,7 @@ include('session.php'); // Tạo CSRF token
  <form method="POST" action="xlchangepass.php">
         <div style="position: relative;">
             <input type="password" id="current_password" name="current_password" placeholder="Nhập mật khẩu cũ" required minlength="8">
-            <i class="fa-regular fa-eye-slash eye-icon" onclick="togglePassword('current_password', this)"></i>
+            <i class="fa-regular fa-eye-slash eye-icon" onclick="togglePassword('current_password', this)"></i>    
         </div>
         <div style="position: relative;">
             <input type="password" id="new_password" name="new_password" placeholder="Nhập mật khẩu mới" required minlength="8"
@@ -182,6 +218,7 @@ include('session.php'); // Tạo CSRF token
                 title="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ số và ký tự đặc biệt">
             <i class="fa-regular fa-eye-slash eye-icon" onclick="togglePassword('confirm_password', this)"></i>
         </div>
+        
         <?php
 // Khởi tạo Google Authenticator
 require_once 'vendor/autoload.php';  // Đảm bảo bạn đã cài đặt thư viện PHPGangsta/GoogleAuthenticator
@@ -202,6 +239,7 @@ echo "<img src='" . htmlspecialchars($qrCodeUrl) . "' />";
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <button type="submit">Đổi mật khẩu</button>
     </form>
+    <a href="trangchu.php" class="back-to-trangchu" style="color: #006400;">Quay lại </a>
 
     </div>
 </body>
