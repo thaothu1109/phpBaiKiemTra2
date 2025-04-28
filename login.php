@@ -177,8 +177,23 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
     <input type="text" name="username_or_email" class="login-input" placeholder="Tên người dùng hoặc Email" required>
 
     <div style="position: relative;">
-        <input type="password" id="password" name="password" class="login-input" placeholder="Mật khẩu" required minlength="5">
-    </div>
+    <input type="password" id="password" name="password" class="login-input" placeholder="Mật khẩu" required minlength="5">
+    <i class="fas fa-eye-slash eye-icon" id="togglePassword" onclick="togglePassword()"></i>
+</div>
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const icon = document.getElementById('togglePassword');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+    }
+</script>
+
     <div class="forgot-password">
         <a style = "color: #006400;" href="fgpassword.php">Quên mật khẩu?</a>
     </div>
