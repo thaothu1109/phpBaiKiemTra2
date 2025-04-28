@@ -179,6 +179,9 @@ if (isset($_GET['error'])) {
 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <button type="submit">Đăng ký</button>
     </form>
+    <div class="login-link">
+    Bạn đã có tài khoản? <a href="login.php">Đăng nhập tại đây</a>
+</div>
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
