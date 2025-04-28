@@ -76,9 +76,10 @@ if ($user) {
     $updateLogStmt->execute();
 }
 
-// Xóa email khỏi session và chuyển hướng đến trang reset_password
+// Xóa email và csrf khỏi session và chuyển hướng đến trang reset_password
 unset($_SESSION['otp_email']);
-$_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập với mật khẩu mới.'];
+
+$_SESSION['message'] = ['type' => 'success', 'text' => 'Đặt lại mật khẩu thành công. Đang điều hướng để bạn có thể đăng nhập với mật khẩu mới.'];
 header("Location: reset_password.php?redirect_to=login");
 exit();
 // 

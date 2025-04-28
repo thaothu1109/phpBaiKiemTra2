@@ -161,23 +161,6 @@ button:hover {
     transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu khung */
 }
 
-.password-wrapper .eye-icon {
-    position: absolute; /* Đặt biểu tượng mắt ở vị trí tuyệt đối */
-    right: 15px; /* Căn lề phải bên trong ô nhập */
-    top: 50%; /* Căn giữa theo chiều dọc */
-    transform: translateY(-50%); /* Đưa biểu tượng về chính giữa */
-    cursor: pointer; /* Thay đổi con trỏ khi hover */
-    font-size: 18px; /* Kích thước biểu tượng */
-    color: #006400; /* Màu biểu tượng */
-    background-color: transparent; /* Đảm bảo nền trong suốt */
-    border: none; /* Loại bỏ viền */
-    outline: none; /* Loại bỏ viền khi focus */
-    width: 25px; /* Cố định chiều rộng của biểu tượng */
-    height: 25px; /* Cố định chiều cao của biểu tượng */
-    text-align: center; /* Căn giữa nội dung bên trong biểu tượng */
-}
-
-
 
     </style>
 
@@ -225,7 +208,7 @@ button:hover {
             </div>
          </div>
 
-         <input type="hidden" name="email" value="<?php echo isset($_SESSION['otp_email']) ? htmlspecialchars($_SESSION['otp_email']) : ''; ?>">        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+         <input type="hidden" name="email" value="<?php echo isset($_SESSION['otp_email']) ? htmlspecialchars($_SESSION['otp_email']) : ''; ?>">        
          <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
          <button type="submit">Đặt Lại Mật Khẩu</button>
         </form>
